@@ -14,7 +14,6 @@
 
     for (let i = slideCount; i > 0; i--) {
       // Generate the radio buttons
-      console.log(i);
 
       let radioBtn = document.createElement('input');
       radioBtn.type = 'radio';
@@ -38,7 +37,24 @@
       paginationContainer.prepend(label);
     }
 
-    // 
+    // Automate the slider change
+    const changeSlide = () => {
+      //Get the radio buttons
+      const radioButtons = [...document.querySelectorAll('.slide-radio')];
+
+      // Get the current index
+      const currentIndex = radioButtons.findIndex(rb => rb.checked);
+
+      // Check the next radio button
+      radioButtons[(currentIndex + 1) % radioButtons.length].checked = true;
+    };
+
+    let autoRun = setInterval(changeSlide, 5000);
+
+    // Stop autorun at mouse enter
+    paginationContainer.addEventListener('mouseenter', () => clearInterval(autoRun));
+    // Start again the auto at mouse leave
+    paginationContainer.addEventListener('mouseleave', () => autoRun = setInterval(changeSlide, 5000));
   }
   document.body.onload = initslider;
 }());
